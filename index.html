@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Poorvi</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body {
+    background:linear-gradient(180deg,#ffd6e7,#f3d9ff,#ffe5d0,#fff0f5);
+    scroll-behavior:smooth;
+    overflow-x:hidden;
+}
+
+/* Password Screen */
+#lockScreen {
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:#fff0f5;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:1000;
+    transition: opacity 1s;
+}
+
+input {
+    padding:10px;
+    border-radius:10px;
+    border:1px solid pink;
+    margin:10px;
+    text-align: center;
+}
+
+/* Sections */
+section {
+    min-height:100vh;
+    padding:80px 20px;
+    text-align:center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1, h2 {
+    font-family:'Dancing Script',cursive;
+    color:#ff4d88;
+    margin-bottom: 20px;
+}
+
+/* Button */
+.btn {
+    padding:15px 30px;
+    border:none;
+    border-radius:30px;
+    background:#ff85a2;
+    color:white;
+    cursor:pointer;
+    box-shadow:0 0 15px rgba(255,105,135,0.6);
+    margin-top:20px;
+    transition: 0.3s;
+}
+.btn:hover { transform: scale(1.05); }
+
+/* Cards */
+.card {
+    background:rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px);
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+    margin:15px;
+    transition:0.3s;
+}
+.card:hover {transform:translateY(-10px);}
+
+/* Gallery */
+.gallery {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+.gallery img {
+    width:200px;
+    height:200px;
+    object-fit:cover;
+    margin:15px;
+    border-radius:15px;
+    box-shadow:0 10px 20px rgba(0,0,0,0.15);
+    transition:0.3s;
+}
+.gallery img:hover {transform:scale(1.1); z-index: 10;}
+
+/* Notes */
+.note {
+    display:inline-block;
+    padding:15px 25px;
+    background:#fff;
+    border-radius:30px;
+    margin:10px;
+    cursor:pointer;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    border: 1px dashed #ffb6c1;
+}
+
+/* Modal */
+.modal {
+    display:none;
+    position:fixed;
+    top:0; left:0; width:100%; height:100%;
+    background:rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+    justify-content:center;
+    align-items:center;
+    z-index: 2000;
+}
+.modal-content {
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    text-align: center;
+    max-width: 80%;
+}
+.modal-content p {
+    font-family: 'Dancing Script', cursive;
+    font-size: 28px;
+    color: #ff4d88;
+}
+
+/* Timeline */
+.timeline {
+    border-left:3px solid #ff85a2;
+    margin:40px auto;
+    width:100%;
+    max-width: 400px;
+    text-align:left;
+}
+.timeline div {
+    margin:20px;
+    padding-left:20px;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    position: relative;
+}
+.timeline div::before {
+    content: '';
+    position: absolute;
+    left: -24px; top: 15px;
+    width: 15px; height: 15px;
+    background: #ff85a2;
+    border-radius: 50%;
+}
+
+/* Animated Envelope & Letter */
+.envelope-wrapper {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    margin: 40px auto;
+    cursor: pointer;
+}
+.envelope {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #ff85a2;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    z-index: 3;
+}
+.envelope::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    border-top: 100px solid #ff4d88;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    transform-origin: top;
+    transition: transform 0.6s ease-in-out;
+    z-index: 4;
+}
+.envelope.open::before {
+    transform: rotateX(180deg);
+    z-index: 1;
+}
+.envelope-text {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-family: 'Dancing Script', cursive;
+    font-size: 24px;
+    z-index: 5;
+    pointer-events: none;
+}
+.letter-paper {
+    position: absolute;
+    top: 10px; left: 10px; right: 10px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 2;
+    transition: 0.8s ease-in-out;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    opacity: 0;
+}
+.envelope.open .letter-paper {
+    transform: translateY(-120px);
+    opacity: 1;
+    z-index: 5;
+}
+
+.full-letter {
+    max-width:700px;
+    margin:auto;
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+    line-height:1.8;
+    display: none;
+    opacity: 0;
+    transition: 1s;
+}
+
+/* Scratch to Reveal */
+.scratch-container {
+    position: relative;
+    width: 300px;
+    height: 150px;
+    margin: 20px auto;
+    background: white;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Dancing Script', cursive;
+    font-size: 24px;
+    color: #ff4d88;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    user-select: none;
+}
+#scratch-pad {
+    position: absolute;
+    top: 0; left: 0;
+    border-radius: 15px;
+    cursor: grab;
+}
+
+/* Map Container */
+.map-container {
+    width: 100%;
+    max-width: 600px;
+    height: 300px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Fade */
+.fade {
+    opacity:0;
+    transform:translateY(40px);
+    transition:1s;
+}
+.fade.show {
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* 3D Floating Hearts */
+.heart {
+    position:fixed;
+    bottom:-50px;
+    font-size:20px;
+    animation:floatUp linear infinite;
+    opacity:0.7;
+    z-index: 0;
+    text-shadow: 0 0 5px rgba(255,105,135,0.5);
+}
+@keyframes floatUp {
+    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.7;}
+    100% { transform: translateY(-120vh) rotate(360deg) scale(1.5); opacity: 0;}
+}
+
+/* Fireworks */
+.firework {
+    position:absolute;
+    width:5px;
+    height:5px;
+    border-radius: 50%;
+    background:pink;
+    animation:explode 1s ease-out infinite;
+    pointer-events: none;
+}
+@keyframes explode {
+    from {transform:scale(1); opacity: 1;}
+    to {transform:scale(20); opacity:0;}
+}
+
+/* Stars */
+.star {
+    position:absolute;
+    color:white;
+    font-size:14px;
+    opacity:0.8;
+    z-index: 0;
+}
+</style>
+</head>
+<body>
+
+<div id="lockScreen">
+    <h2 style="font-size: 40px;">Enter Our Password</h2>
+    <input type="password" id="pass" placeholder="Password">
+    <button class="btn" onclick="unlock()">Open My Heart</button>
+</div>
+
+<section style="background: radial-gradient(circle, #2a0845 0%, #6441A5 100%); color: white; position: relative; overflow: hidden;">
+    <div id="stars-container"></div>
+    <div style="z-index: 1;">
+        <h1 style="font-size: 60px; color: #fff; text-shadow: 0 0 20px #ff85a2;">Happy Birthday, Poorvi</h1>
+        <p style="font-size: 20px;">I made this little world just for you.</p>
+        <button class="btn" onclick="scrollToGallery()">Start Journey ✨</button>
+    </div>
+</section>
+
+<section id="gallery" class="fade">
+    <h2>Our Beautiful Memories</h2>
+    <div class="gallery">
+        <img src="photo1.jpeg">
+        <img src="photo2.jpeg">
+        <img src="photo3.jpeg">
+        <img src="photo4.jpeg">
+    </div>
+</section>
+
+<section class="fade">
+    <h2>The Little Things I Love About You</h2>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center; max-width: 800px;">
+        <div class="card">Your smile</div>
+        <div class="card">Your laugh</div>
+        <div class="card">Your eyes</div>
+        <div class="card">Talking with you</div>
+        <div class="card">Your kindness</div>
+        <div class="card">Your voice</div>
+        <div class="card">Your way of doing things</div>
+        <div class="card">The way you understand me</div>
+        <div class="card">The way you make me happy</div>
+        <div class="card" style="font-weight: bold; color: #ff4d88;">Everything about you</div>
+    </div>
+</section>
+
+<section class="fade">
+    <h2>Where Our Story Began</h2>
+    <p style="margin-bottom: 20px;">Our special spot in the world.</p>
+    <div class="map-container">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15282225.79979123!2d73.7250245393691!3d20.750301298393563!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30635ff06b92b791%3A0xd78c4fa1854213a6!2sIndia!5e0!3m2!1sen!2sin!4v1712061245000!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+</section>
+
+<section class="fade">
+    <h2>Love Algorithm</h2>
+    <div style="background: #282a36; color: #50fa7b; padding: 20px; border-radius: 10px; font-family: monospace; text-align: left; max-width: 400px; width: 100%;">
+        <p id="typing"></p>
+    </div>
+</section>
+
+<section class="fade">
+    <h2>A Hidden Message</h2>
+    <p>Use your finger or mouse to scratch the card.</p>
+    <div class="scratch-container">
+        <span>You are my forever wifey! ❤️</span>
+        <canvas id="scratch-pad" width="300" height="150"></canvas>
+    </div>
+</section>
+
+<section class="fade">
+    <h2>Digital Jar of Notes</h2>
+    <div style="max-width: 600px;">
+        <div class="note" onclick="showNote('You make my life happier')">Open Note 💌</div>
+        <div class="note" onclick="showNote('I’m proud of you')">Open Note 💌</div>
+        <div class="note" onclick="showNote('You are my favorite person')">Open Note 💌</div>
+        <div class="note" onclick="showNote('You feel like home')">Open Note 💌</div>
+        <div class="note" onclick="showNote('I would choose you again')">Open Note 💌</div>
+    </div>
+</section>
+
+<section class="fade">
+    <h2>Our Timeline</h2>
+    <div class="timeline">
+        <div><strong>Jan 23, 2026</strong><br>The day I texted</div>
+        <div><strong>Jan 24, 2026</strong><br>The day I proposed you</div>
+        <div><strong>Jan 27, 2026</strong><br>The Day I really met you fell for u even more we came back from nitte</div>
+        <div><strong>Feb 14, 2026</strong><br>The day I realized You mean the world to Me</div>
+        <div><strong>March 5, 2026</strong><br>The best day of my life</div>
+        <div><strong>March 6, 2026</strong><br>The first concert together</div>
+        <div><strong>Today</strong><br>Celebrating Your Birthday</div>
+    </div>
+</section>
+
+<section class="fade">
+    <h2>Reasons Why I Love You</h2>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center; max-width: 800px;">
+        <div class="card">You understand me perfectly</div>
+        <div class="card">You support my dreams</div>
+        <div class="card">You make me laugh uncontrollably</div>
+        <div class="card">You care about me deeply</div>
+        <div class="card">You are breathtakingly beautiful</div>
+        <div class="card">You have the kindest heart</div>
+        <div class="card">You are my peace in chaos</div>
+        <div class="card">You are my absolute happiness</div>
+    </div>
+</section>
+
+<section class="fade">
+    <h2>A Letter For You</h2>
+    <p>Tap the envelope to open it.</p>
+    
+    <div class="envelope-wrapper" onclick="openEnvelope()">
+        <div class="envelope" id="env">
+            <div class="envelope-text" id="env-text">Open Me</div>
+            <div class="letter-paper">Happy Birthday! (Scroll down)</div>
+        </div>
+    </div>
+
+    <div class="full-letter" id="full-letter">
+        My love,<br><br>
+        You are one of the most beautiful things that ever happened to my life.
+        You make my days brighter, and my heart happier.
+        I never thought someone could mean this much to me, but here you are,
+        being my favorite person, my happiness, my safe place.
+        You mean the whole world to me, The things you have done to me
+        I would never Forget those things. The day feels off for me,
+        I never loved someone in my whole world, I am ready to face the
+        whole world if against us. Never in my life I ever wanted to 
+        change in life. For u i am ready to anything. I want to spend more 
+        time, i want to explore u even deeper.
+        <br><br>
+        Thank you for your smile, your kindness, your patience, your love,
+        and for being exactly who you are.
+        <br><br>
+        If I had to choose again, I would still choose you.
+    </div>
+</section>
+
+<section class="fade">
+    <h2>Our Song</h2>
+    <audio controls>
+        <source src="your-song.mp3" type="audio/mp3">
+    </audio>
+</section>
+
+<section class="fade">
+    <button class="btn" style="padding: 20px 40px; font-size: 18px;" onclick="showNote('No matter what happens, I’m always on your side. You are my everything.')">
+        Click when you need a smile 😊
+    </button>
+</section>
+
+<section id="ending-sec">
+    <h1 style="font-size: 50px;">
+        Thank you for being in my life.<br>
+        Thank you for being you.<br>
+        Thank you for making my world beautiful.<br>
+        I love you.
+    </h1>
+</section>
+
+<div class="modal" id="modal" onclick="closeModal(event)">
+    <div class="modal-content" id="modal-box">
+        <p id="modalText"></p>
+        <button class="btn" onclick="closeModal(event, true)">Close</button>
+    </div>
+</div>
+
+<script>
+/* 1. Password Lock */
+function unlock(){
+    if(document.getElementById("pass").value == "1123"){
+        document.getElementById("lockScreen").style.opacity = "0";
+        setTimeout(() => {
+            document.getElementById("lockScreen").style.display = "none";
+        }, 1000);
+    } else {
+        alert("Incorrect password!"); 
+    }
+}
+
+/* 2. Scroll */
+function scrollToGallery(){
+    document.getElementById("gallery").scrollIntoView({behavior:'smooth'});
+}
+
+/* 3. Enhanced 3D Floating Hearts */
+for(let i=0; i<25; i++){
+    let heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤";
+    heart.style.left = Math.random() * 100 + "%";
+    heart.style.animationDuration = (8 + Math.random() * 7) + "s";
+    heart.style.animationDelay = (Math.random() * 5) + "s";
+    
+    // Fake 3D effect with scale and blur
+    let scale = Math.random() * 1.5 + 0.5;
+    let blur = Math.random() > 0.5 ? Math.random() * 3 : 0;
+    heart.style.transform = `scale(${scale})`;
+    heart.style.filter = `blur(${blur}px)`;
+    heart.style.color = Math.random() > 0.5 ? "#ff4d88" : "#ffb6c1";
+    
+    document.body.appendChild(heart);
+}
+
+/* 4. Stars Background for Landing */
+const starsContainer = document.getElementById('stars-container');
+for(let i=0; i<50; i++){
+    let star = document.createElement("div");
+    star.className = "star";
+    star.innerHTML = "★";
+    star.style.left = Math.random() * 100 + "%";
+    star.style.top = Math.random() * 100 + "%";
+    star.style.fontSize = (Math.random() * 10 + 5) + "px";
+    star.style.animation = `pulseGlow ${Math.random() * 2 + 1}s infinite alternate`;
+    starsContainer.appendChild(star);
+}
+
+/* 5. Typing Algorithm */
+let text=[
+    "Initializing Love Algorithm...",
+    "Loading Memories...",
+    "Analyzing Hugs...",
+    "Counting Laughs...",
+    "Processing Love...",
+    "Final Result:",
+    "You + Me = Forever",
+    "Probability of loving you forever: 100%"
+];
+let lineIdx = 0;
+let typed = false;
+function type(){
+    if(lineIdx < text.length){
+        document.getElementById("typing").innerHTML += text[lineIdx] + "<br><br>";
+        lineIdx++;
+        setTimeout(type,800);
+    }
+}
+
+/* 6. Notes Modal */
+function showNote(msg){
+    document.getElementById("modalText").innerText = msg;
+    document.getElementById("modal").style.display = "flex";
+}
+function closeModal(e, force = false){
+    if(force || e.target.id === 'modal'){
+        document.getElementById("modal").style.display = "none";
+    }
+}
+
+/* 7. Animated Envelope */
+let envelopeOpened = false;
+function openEnvelope() {
+    if(envelopeOpened) return;
+    envelopeOpened = true;
+    const env = document.getElementById('env');
+    const fullLetter = document.getElementById('full-letter');
+    document.getElementById('env-text').style.display = 'none';
+    
+    env.classList.add('open');
+    setTimeout(() => {
+        fullLetter.style.display = 'block';
+        setTimeout(() => fullLetter.style.opacity = '1', 50);
+    }, 1000);
+}
+
+/* 8. Scratch to Reveal Canvas */
+const canvas = document.getElementById('scratch-pad');
+const ctx = canvas.getContext('2d');
+let isDrawing = false;
+
+// Fill the canvas with a solid color and text
+ctx.fillStyle = '#ff85a2';
+ctx.fillRect(0, 0, 300, 150);
+ctx.font = '24px Dancing Script';
+ctx.fillStyle = 'white';
+ctx.textAlign = 'center';
+ctx.fillText('Scratch Me!', 150, 85);
+
+function getMousePos(e) {
+    const rect = canvas.getBoundingClientRect();
+    let x = e.clientX || (e.touches && e.touches[0].clientX);
+    let y = e.clientY || (e.touches && e.touches[0].clientY);
+    return { x: x - rect.left, y: y - rect.top };
+}
+
+function scratch(e) {
+    if (!isDrawing) return;
+    e.preventDefault();
+    const pos = getMousePos(e);
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath();
+    ctx.arc(pos.x, pos.y, 25, 0, Math.PI * 2);
+    ctx.fill();
+}
+
+canvas.addEventListener('mousedown', () => isDrawing = true);
+canvas.addEventListener('mousemove', scratch);
+canvas.addEventListener('mouseup', () => isDrawing = false);
+canvas.addEventListener('mouseleave', () => isDrawing = false);
+
+canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, {passive: false});
+canvas.addEventListener('touchmove', scratch, {passive: false});
+canvas.addEventListener('touchend', () => isDrawing = false);
+
+/* 9. Fade in on scroll & Triggers */
+const faders = document.querySelectorAll('.fade');
+let fireworksStarted = false;
+
+window.addEventListener('scroll', ()=>{
+    faders.forEach(el=>{
+        const rect = el.getBoundingClientRect();
+        if(rect.top < window.innerHeight - 100){
+            el.classList.add('show');
+            
+            // Trigger typing when section is visible
+            if(el.querySelector('#typing') && !typed) {
+                typed = true;
+                type();
+            }
+        }
+    });
+
+    // Fireworks trigger when reaching the very bottom
+    const endingSec = document.getElementById('ending-sec');
+    if(endingSec.getBoundingClientRect().top < window.innerHeight - 200 && !fireworksStarted) {
+        fireworksStarted = true;
+        startFireworks();
+    }
+});
+
+/* 10. Fireworks at the end */
+function startFireworks() {
+    setInterval(() => {
+        let fire = document.createElement("div");
+        fire.className = "firework";
+        
+        // Random position relative to the ending section
+        const endSec = document.getElementById('ending-sec');
+        const rect = endSec.getBoundingClientRect();
+        
+        fire.style.left = Math.random() * window.innerWidth + "px";
+        fire.style.top = (rect.top + window.scrollY + Math.random() * rect.height) + "px";
+        
+        // Random colors
+        const colors = ['#ff85a2', '#ff4d88', '#ffffff', '#ffd6e7'];
+        fire.style.background = colors[Math.floor(Math.random() * colors.length)];
+        
+        document.body.appendChild(fire);
+        setTimeout(() => { fire.remove(); }, 1000);
+    }, 300);
+}
+
+</script>
+
+</body>
+</html>
